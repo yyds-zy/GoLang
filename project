@@ -1,1 +1,10 @@
-
+https://github.com/deatil/doak-cms   文章管理系统  新手使用
+项目介绍
+使用 go 开发的通用文章管理系统
+核心使用 Fiber、Xorm 及 Rpcx 等开发
+不使用 rpc 可将 main.go 里 rpc 部分注释掉
+环境要求
+Go >= 1.18
+Myql
+Redis
+Etcd
