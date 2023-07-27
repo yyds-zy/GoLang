@@ -7,4 +7,4 @@ https://github.com/deatil/doak-cms   文章管理系统  新手使用
 Go >= 1.18
 Myql
 Redis
-Etcd
+Etcd   https://www.cnblogs.com/binHome/p/12186436.html
