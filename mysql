@@ -28,8 +28,8 @@ redis的数据库就是一款缓存数据库，用于存储使用频繁的数据
 
 
 四，Mysql和Redis各自的优缺点。
-[]!(https://github.com/yyds-zy/GoLang/blob/master/images/1.png)
-[]!(https://github.com/yyds-zy/GoLang/blob/master/images/2.png)
+[1]!(https://github.com/yyds-zy/GoLang/blob/master/images/1.png)
+[2]!(https://github.com/yyds-zy/GoLang/blob/master/images/2.png)
 
 五，最后redis和mysql的区别总结
 
