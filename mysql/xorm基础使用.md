@@ -25,3 +25,9 @@ type KfTransferConfig struct {
 	DeletedAt   time.Time `xorm:"deleted_at"`
 }
 ```
+**结构体名字就是表名字以大写字母开头**
+
+**声明结构体一定要设置一个主键钮！！！不然后面的查询修改都不会起效！pk**
+
+## 创建orm引擎组
+
