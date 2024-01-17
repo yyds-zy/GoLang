@@ -86,10 +86,20 @@ func connectOnlineDB(onlineDBConfig []string) (*xorm.EngineGroup, error) {
 ```
 
 ### 使用orm引擎组
+[使用说明](https://www.cnblogs.com/dfsxh/articles/11068944.html)
 ```
 // 获取引擎组对象
 engine := data.GetEngine()
 info := &model.KfTransferConfig{}
+
+// 设置要操作的表
+session := engine.Table("TableName")
+
+// 从数据库里面查询一条记录  SELECT * FROM info LIMIT 1
+engine.Get(info)
+// 从数据库中查询多条记录    SELECT * FROM info
+engine.Find(info)
+
 // 查询： 通过bid查询info对象
 if _, err := engine.Where("bid = ?", bid).Get(info); err != nil {
           return nil, err
@@ -101,8 +111,6 @@ session := engine.NewSession()
 session.Begin()
 // 关键会话事务
 defer session.Close()
-// 设置要操作的表
-session := engine.Table("TableName")
 
 // 插入：插入info数据
 if _, err = session.Insert(info); err != nil {
