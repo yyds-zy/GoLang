@@ -29,5 +29,61 @@ type KfTransferConfig struct {
 
 **声明结构体一定要设置一个主键钮！！！不然后面的查询修改都不会起效！pk**
 
-## 创建orm引擎组
+### 创建orm引擎组
+```
+var engine *xorm.EngineGroup  // 声明orm引擎组
+
+func GetEngine() *xorm.EngineGroup {
+	return engine
+}
+
+const DBConfigTemplate = "%v:%v@tcp(%v)/%v?charset=%v&loc=Local&parseTime=true"
+
+func InitMysqlConnection() error {
+        // 获取DB配置
+        user := conf.GlobalConf.Mysql.User
+	pwd := conf.GlobalConf.Mysql.Pwd
+	devDBName := conf.GlobalConf.Mysql.DevDBName
+	onlineDBName := conf.GlobalConf.Mysql.OnlineDBName
+	charset := conf.GlobalConf.Mysql.Charset
+
+	// 组装devDB和onlineDB配置
+	var devDBConfig []string
+	var onlineDBConfig []string
+	for _, addr := range conf.GlobalConf.Mysql.Addr {
+		devDBConfig = append(devDBConfig, fmt.Sprintf(DBConfigTemplate, user, pwd, addr, devDBName, charset))
+		onlineDBConfig = append(onlineDBConfig, fmt.Sprintf(DBConfigTemplate, user, pwd, addr, onlineDBName, charset))
+	}
+
+	var err error
+	engine, err = connectDevDB(devDBConfig)
+	if err != nil {
+		return err
+	}
+	onlineEngine, err = connectOnlineDB(devDBConfig)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+unc connectDevDB(devDBConfig []string) (*xorm.EngineGroup, error) {
+	xormEngine, err := xorm.NewEngineGroup("mysql", devDBConfig)
+	if err != nil {
+		return nil, err
+	}
+	return xormEngine, nil
+}
+
+func connectOnlineDB(onlineDBConfig []string) (*xorm.EngineGroup, error) {
+	xormEngine, err := xorm.NewEngineGroup("mysql", onlineDBConfig)
+	if err != nil {
+		return nil, err
+	}
+	return xormEngine, nil
+}
+
+```
+
+### 使用orm引擎组
 
