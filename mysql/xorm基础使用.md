@@ -86,4 +86,41 @@ func connectOnlineDB(onlineDBConfig []string) (*xorm.EngineGroup, error) {
 ```
 
 ### 使用orm引擎组
+```
+// 获取引擎组对象
+engine := data.GetEngine()
+info := &model.KfTransferConfig{}
+// 查询： 通过bid查询info对象
+if _, err := engine.Where("bid = ?", bid).Get(info); err != nil {
+          return nil, err
+}
 
+// 创建一个会话对象
+session := engine.NewSession()
+// 开启会话事务
+session.Begin()
+// 关键会话事务
+defer session.Close()
+// 设置要操作的表
+session := engine.Table("TableName")
+
+// 插入：插入info数据
+if _, err = session.Insert(info); err != nil {
+        // 创建sql错误类型
+	var mysqlErr *mysql.MySQLError
+        // 判断err是否属于mysqlErr类型  属于的话将err赋值给mysqlerr
+	if errors.As(err, &mysqlErr) {
+		if mysqlErr.Number == 1062 {
+                        // session.Cols 指定列的数据  更新指定bid数据
+			_, err = session.Cols("opened, type, catalogue_id, catalogue, config, updated_at").Where("bid = ?", info.Bid).Update(info)
+		}
+	}
+}
+// 提交事务
+session.Commit()
+
+开启事务操作也可以简写
+engine.Transaction(func(session *xorm.Session) (interface{}, error) {
+       // 操作session
+})
+```
